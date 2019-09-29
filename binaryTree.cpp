@@ -1,21 +1,8 @@
 #include "binaryTree.h"
 
-struct BinData
-{
-	int key;
-	long data;
-    char chars[501];
-};
-
-struct BinTree
-{
-	int left;
-	int right;
-	BinData notch;
-};
-
-bool insertBinaryTree(FILE* tree, BinTree registry, BinData data, int cont, int sit, long* transf, long* comp);
-{
+bool insertBinaryTree(BinTree registry, BinData data, int cont, int sit, long* transf, long* comp){
+	FILE* tree = abre_arquivo_existente();
+	
 	//registry a ser inserido na arvore!
 	registry.notch = data;
 	registry.left = -1;
@@ -82,7 +69,8 @@ bool insertBinaryTree(FILE* tree, BinTree registry, BinData data, int cont, int 
 	return true;
 }
 
-bool searchBinaryTree(FILE* tree, BinTree registry, BinData* data, long* transf, long* comp){
+bool searchBinaryTree(BinTree registry, BinData* data, long* transf, long* comp){
+	FILE* tree = abre_arquivo_existente();
 	while(fread(&registry, sizeof(BinTree), 1, tree) == 1){
 		(*transf)++;
 		if(data->key == registry.notch.key){

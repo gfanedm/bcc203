@@ -23,12 +23,15 @@
 
 #include "Registro.h"
 #include "Acesso_sequencial.h"
+#include "binaryTree.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
 #include <iostream>
+
 using namespace std;
+
 int main(int argc, char *argv[]) {
 	args args;
 	if (valida_args(argc, argv, &args) == 0)
@@ -56,17 +59,46 @@ int main(int argc, char *argv[]) {
 		cout << "Tempo de pesquisa sequencial: " << (((float)t2)/CLOCKS_PER_SEC) << endl;
 		cout << "Numero de comparacoes: " << comp << endl;
 		cout << "Numero de transferencias: " << transfer;
-	} else {
-
-
-		if (args.metodo == 2) {
-
-		} else {
-			if (args.metodo == 3) {
-
-			} else {
-			}
+	} else if (args.metodo == 2) {
+	
+		clock_t start1 = clock(), 	last1, start2, last2;
+		
+		long int comp = 0, transf = 0;
+		
+		BinData data;
+		fread(&data, sizeof(BinData), 1, abre_arquivo_existente());
+		BinTree registry;
+		registry.notch = data;
+		registry.left = -1;
+		registry.right = -1;
+		
+		int cont = 1;
+		fwrite(&registry, sizeof(BinTree), 1, abre_arquivo_existente());
+		while(fread(&data, sizeof(data), 1, abre_arquivo_existente()) == 1){
+			if(insertBinaryTree(registry, data, cont, args.situacao, &transf, &comp)) cont++;
 		}
-		return 0;
-	}
+		
+		last1 = clock();
+		start2 = clock();
+		
+		data.key = args.chave;
+		
+		bool find = searchBinaryTree(registry, &data, &transf, &comp);
+		
+		last2 = clock();
+		
+		if (find) cout << "Chave encontrada: " << data.key << endl;
+		else cout << "Chave não foi encontrada" << endl;
+
+		cout << "Tempo de insercao binaria: " << (((float) (last1 - start1))/CLOCKS_PER_SEC) << endl;
+		cout << "Tempo de pesquisa binaria: " << (((float) (last2 - start2))/CLOCKS_PER_SEC) << endl;
+		cout << "Numero de comparacoes: " << comp << endl;
+		cout << "Numero de transferencias: " << transf;
+			
+	} else if (args.metodo == 3) {
+
+	} else {
+			
+	}	
+	return 0;
 }
