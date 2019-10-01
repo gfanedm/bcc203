@@ -29,3 +29,13 @@ FILE *openBooks() {
     return input;
   }
 }
+
+FILE *openBin() {
+  FILE *input;
+  if ((input = fopen("arvore.bin", "w+b")) == NULL) {
+    printf("Erro na abertura do arquivo de livros.\n");
+    return NULL;
+  } else {
+    return input;
+  }
+}

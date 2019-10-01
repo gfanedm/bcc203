@@ -1,17 +1,14 @@
 #include "binaryTree.h"
 
-bool insertBinaryTree(BinTree tree, Registry data, int cont, int sit,
-                      long* transf, long* comp) {
-  FILE* file = openFile();
-  cout << "CUCUUCUCU" << endl;
+bool insertBinaryTree(FILE* tree, BinTree registry, Registry data, int cont,
+                      int sit, long* transf, long* comp) {
+  // registry a ser inserido na arvore!
+  registry.notch = data;
+  registry.left = -1;
+  registry.right = -1;
 
-  // tree a ser inserido na arvore!
-  tree.notch = data;
-  tree.left = -1;
-  tree.right = -1;
-
-  fseek(file, 0, SEEK_END);
-  fwrite(&tree, sizeof(BinTree), 1, file);
+  fseek(tree, 0, SEEK_END);
+  fwrite(&registry, sizeof(BinTree), 1, tree);
 
   long aux;
 
@@ -21,87 +18,81 @@ bool insertBinaryTree(BinTree tree, Registry data, int cont, int sit,
 
     aux = sizeof(BinTree);
 
-    fseek(file, -2 * aux, SEEK_CUR);
-    fread(&tree, sizeof(BinTree), 1, file);
+    fseek(tree, -2 * aux, SEEK_CUR);
+    fread(&registry, sizeof(BinTree), 1, tree);
 
     (*transf)++;
 
     // Voltar novamente ao penultimo no!
-    fseek(file, -aux, SEEK_CUR);
+    fseek(tree, -aux, SEEK_CUR);
   } else {
     // Voltar ao inicio da arvore, lê o nó da raiz e voltar para o inicio!
 
-    rewind(file);
-    fread(&tree, sizeof(BinTree), 1, file);
+    rewind(tree);
+    fread(&registry, sizeof(BinTree), 1, tree);
     (*transf)++;
-    rewind(file);
+    rewind(tree);
   }
 
-  cout << "=================" << endl;
-  while (1) {
-    // Verifica a posicao do novo registro!
+  while (true) {
+    // Verifica a posicao do novo regitro!
 
     (*comp)++;
-    if (data.key < tree.notch.key) {
-      if (tree.left == -1) {
+    if (data.key < registry.notch.key) {
+      if (registry.left == -1) {
         // Salva o nó modificado
-        tree.left = cont;
-        fwrite(&tree, sizeof(BinTree), 1, file);
+        registry.left = cont;
+        fwrite(&registry, sizeof(BinTree), 1, tree);
 
-        cout << "aquipassouuu" << endl;
         break;
       } else {
         aux = sizeof(BinTree);
 
-        fseek(file, tree.left * sizeof(BinTree), SEEK_SET);
-        fread(&tree, sizeof(BinTree), 1, file);
+        fseek(tree, registry.left * sizeof(BinTree), SEEK_SET);
+        fread(&registry, sizeof(BinTree), 1, tree);
 
-        // cout << "tree = " << tree.left << " / " << tree.right << " / "
-        //      << tree.notch.key << endl;
         (*transf)++;
 
-        fseek(file, -aux, SEEK_CUR);
-        // cout << "retornandos" << endl;
+        fseek(tree, -aux, SEEK_CUR);
         // Retorna ao inicio do nó encontrado no fseek anterior
       }
     } else {
-      if (tree.right == -1) {
-        tree.right = cont;
-        fwrite(&tree, sizeof(BinTree), 1, file);
-        cout << "adsdsaadsadsdasadsdasadsdsa" << endl;
+      if (registry.right == -1) {
+        registry.right = cont;
+        fwrite(&registry, sizeof(BinTree), 1, tree);
+
         break;
       } else {
         aux = sizeof(BinTree);
 
-        fseek(file, tree.right * sizeof(BinTree), SEEK_SET);
-        fread(&tree, sizeof(BinTree), 1, file);
+        fseek(tree, registry.right * sizeof(BinTree), SEEK_SET);
+        fread(&registry, sizeof(BinTree), 1, tree);
 
         (*transf)++;
 
-        fseek(file, -aux, SEEK_CUR);
-        cout << "treee" << endl;
+        fseek(tree, -aux, SEEK_CUR);
       }
     }
   }
   return true;
 }
 
-bool searchBinaryTree(BinTree tree, Registry* data, long* transf, long* comp) {
-  FILE* file = openFile();
-  while (fread(&tree, sizeof(BinTree), 1, file) == 1) {
+bool searchBinaryTree(FILE* tree, BinTree registry, Registry* data,
+                      long* transf, long* comp) {
+  while (fread(&registry, sizeof(BinTree), 1, tree) == 1) {
     (*transf)++;
 
-    if (data->key == tree.notch.key) {
+    if (data->key == registry.notch.key) {
       (*comp)++;
-      *data = tree.notch;
+      *data = registry.notch;
 
       return true;
     } else {
-      if (data->key < tree.notch.key) {
+      if (data->key < registry.notch.key) {
         (*comp)++;
 
-        if (tree.left != -1) {
-          fseek(file, tree.left * sizeof(BinTree), SEEK_SET);
+        if (registry.left != -1) {
+          fseek(tree, registry.left * sizeof(BinTree), SEEK_SET);
         } else {
           return false;
         }
@@ -109,8 +100,8 @@ bool searchBinaryTree(BinTree tree, Registry* data, long* transf, long* comp) {
       } else {
         (*comp)++;
 
-        if (tree.right != -1) {
-          fseek(file, tree.right * sizeof(BinTree), SEEK_SET);
+        if (registry.right != -1) {
+          fseek(tree, registry.right * sizeof(BinTree), SEEK_SET);
         } else {
           return false;
         }

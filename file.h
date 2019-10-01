@@ -6,5 +6,6 @@
 FILE* openFile();
 FILE* createFile();
 FILE* openBooks();
+FILE* openBin();
 
 #endif

@@ -16,7 +16,7 @@ struct BinTree {
   Registry notch;
 };
 
-bool insertBinaryTree(BinTree, Registry, int, int, long*, long*);
-bool searchBinaryTree(BinTree, Registry*, long*, long*);
+bool insertBinaryTree(FILE *, BinTree, Registry, int, int, long *, long *);
+bool searchBinaryTree(FILE *, BinTree, Registry *, long *, long *);
 
 #endif

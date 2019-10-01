@@ -37,7 +37,7 @@
 
 using namespace std;
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
   Arguments args;
 
   if (validateArguments(argc, argv, &args) == 0) {
@@ -75,40 +75,40 @@ int main(int argc, char *argv[]) {
 
   } else if (args.method == 2) {
     cout << "Metodo de pesquisa Arvore binaria. " << endl;
+    FILE* file = openFile();
     clock_t start1 = clock(), last1, start2, last2;
 
     long int comp = 0, transf = 0;
 
     Registry data;
-    fread(&data, sizeof(Registry), 1, openFile());
-    cout << "aaaaaa" << endl;
-    cout << "data= " << data.key << " / " << data.chars << " / " << data.data
-         << endl;
-
     BinTree registry;
+
+    transf++;
+
+    fread(&data, sizeof(Registry), 1, file);
+
     registry.notch = data;
     registry.left = -1;
     registry.right = -1;
 
-    cout << "bbbbbb" << endl;
+    FILE* tree = openBin();
+
     int cont = 1;
-    fwrite(&registry, sizeof(BinTree), 1, openFile());
-    while (fread(&data, sizeof(data), 1, openFile()) == 1) {
-      cout << "lendoooo" << endl;
-      if (insertBinaryTree(registry, data, cont, args.situation, &transf,
-                           &comp)) {
-        cont++;
-        cout << "inseriu" << endl;
-      }
+    fwrite(&registry, sizeof(BinTree), 1, tree);
+    while (fread(&data, sizeof(Registry), 1, file) == 1) {
+      transf++;
+      insertBinaryTree(tree, registry, data, cont, args.situation, &transf,
+                       &comp);
+      cont++;
     }
-    cout << "cccccc" << endl;
 
     last1 = clock();
     start2 = clock();
 
     data.key = args.key;
 
-    bool find = searchBinaryTree(registry, &data, &transf, &comp);
+    rewind(tree);
+    bool find = searchBinaryTree(tree, registry, &data, &transf, &comp);
 
     last2 = clock();
 
@@ -135,5 +135,6 @@ int main(int argc, char *argv[]) {
   } else {
     cout << "Metodo nao encontrado." << endl;
   }
+  exit(0);
   return 0;
 }

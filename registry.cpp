@@ -19,7 +19,7 @@ void generateRegisters(Arguments args) {
   if (args.situation == 1 || args.situation == 3) {
     for (int i = 0; i < args.quantity; ++i) {
       registry[i].key = i;
-      registry[i].data = rand();
+      registry[i].data = i;
 
       fscanf(books, " %s", registry[i].chars);
     }
@@ -31,7 +31,7 @@ void generateRegisters(Arguments args) {
   } else if (args.situation == 2) {
     for (int i = args.quantity - 1; i >= 0; --i) {
       registry[i].key = i;
-      registry[i].data = rand();
+      registry[i].data = i;
 
       fscanf(books, " %s", registry[i].chars);
     }
