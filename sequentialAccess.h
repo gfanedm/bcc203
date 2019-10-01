@@ -1,15 +1,10 @@
-#ifndef ACESSO_SEQUENCIAL_H_
-#define ACESSO_SEQUENCIAL_H_
+#ifndef SEQUENTIAL_ACCESS_H
+#define SEQUENTIAL_ACCESS_H
 
 #define MAX_TABLE 100
 #define PAGE_SIZE 4
 
 #include "registry.h"
-
-struct Index {
-  int key;
-  long int position;
-};
 
 Index* createIndex(Arguments);
 bool search(long int, Registry*, long int*, long int*);

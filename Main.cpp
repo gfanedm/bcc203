@@ -28,6 +28,8 @@
 
 #include <iostream>
 
+#include "bStarTree.h"
+#include "bTree.h"
 #include "binaryTree.h"
 #include "file.h"
 #include "registry.h"
@@ -45,6 +47,7 @@ int main(int argc, char *argv[]) {
   }
 
   if (args.method == 1) {
+    cout << "Metodo de pesquisa sequencial." << endl;
     clock_t t1, t2;
 
     Registry aux;
@@ -71,24 +74,34 @@ int main(int argc, char *argv[]) {
     cout << "Numero de transferencias: " << transfer;
 
   } else if (args.method == 2) {
+    cout << "Metodo de pesquisa Arvore binaria. " << endl;
     clock_t start1 = clock(), last1, start2, last2;
 
     long int comp = 0, transf = 0;
 
-    BinData data;
-    fread(&data, sizeof(BinData), 1, openFile());
+    Registry data;
+    fread(&data, sizeof(Registry), 1, openFile());
+    cout << "aaaaaa" << endl;
+    cout << "data= " << data.key << " / " << data.chars << " / " << data.data
+         << endl;
+
     BinTree registry;
     registry.notch = data;
     registry.left = -1;
     registry.right = -1;
 
+    cout << "bbbbbb" << endl;
     int cont = 1;
     fwrite(&registry, sizeof(BinTree), 1, openFile());
     while (fread(&data, sizeof(data), 1, openFile()) == 1) {
+      cout << "lendoooo" << endl;
       if (insertBinaryTree(registry, data, cont, args.situation, &transf,
-                           &comp))
+                           &comp)) {
         cont++;
+        cout << "inseriu" << endl;
+      }
     }
+    cout << "cccccc" << endl;
 
     last1 = clock();
     start2 = clock();
@@ -109,10 +122,18 @@ int main(int argc, char *argv[]) {
     cout << "Tempo de pesquisa binaria: "
          << (((float)(last2 - start2)) / CLOCKS_PER_SEC) << endl;
     cout << "Numero de comparacoes: " << comp << endl;
-    cout << "Numero de transferencias: " << transf;
+    cout << "Numero de transferencias: " << transf << endl;
 
   } else if (args.method == 3) {
+    cout << "Metodo de pesquisa Arvore B " << endl;
+    bTree(args.key);
+
+  } else if (args.method == 4) {
+    cout << "Metodo de pesquisa Arvore B* " << endl;
+    star(args.key);
+
   } else {
+    cout << "Metodo nao encontrado." << endl;
   }
   return 0;
 }

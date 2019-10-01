@@ -1,6 +1,6 @@
 
-#ifndef REGISTRY_H_
-#define REGISTRY_H_
+#ifndef REGISTRY_H
+#define REGISTRY_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,9 +12,14 @@
 using namespace std;
 
 struct Registry {
-  int key;
+  long int key;
   long int data;
   char chars[500];
+};
+
+struct Index {
+  int key;
+  long int position;
 };
 
 void generateRegisters(Arguments);

@@ -1,24 +1,22 @@
-#ifndef BINARY_TREE_H_
-#define BINARY_TREE_H_
+#ifndef BINARY_TREE_H
+#define BINARY_TREE_H
 
 #include <cstdio>
 #include <cstdlib>
+#include <iostream>
 
 #include "file.h"
+#include "registry.h"
 
-struct BinData {
-  int key;
-  long data;
-  char chars[500];
-};
+using namespace std;
 
 struct BinTree {
   int left;
   int right;
-  BinData notch;
+  Registry notch;
 };
 
-bool insertBinaryTree(BinTree, BinData, int, int, long*, long*);
-bool searchBinaryTree(BinTree, BinData*, long*, long*);
+bool insertBinaryTree(BinTree, Registry, int, int, long*, long*);
+bool searchBinaryTree(BinTree, Registry*, long*, long*);
 
 #endif

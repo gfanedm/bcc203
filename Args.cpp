@@ -10,7 +10,7 @@ int validateArguments(int argc, char *argv[], Arguments *args) {
   args->method = atoi(argv[1]);
   args->quantity = atoi(argv[2]);
   args->situation = atoi(argv[3]);
-  args->show = atoi(argv[4]);
+  args->key = atoi(argv[4]);
 
   if (args->method < 1 || args->method > 4) {
     printf("Argumento <método> incorreto. Deve ser entre 1 e 4.\n");

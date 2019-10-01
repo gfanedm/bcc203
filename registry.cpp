@@ -14,15 +14,14 @@ void shuffle(Registry *registry, int n) {
 }
 
 void generateRegisters(Arguments args) {
+  FILE *books = openBooks();
   Registry *registry = new Registry[args.quantity];
   if (args.situation == 1 || args.situation == 3) {
     for (int i = 0; i < args.quantity; ++i) {
       registry[i].key = i;
       registry[i].data = rand();
 
-      for (int j = 0; j < 500; ++j) {
-        registry[i].chars[j] = (rand() % 95) + 32;
-      }
+      fscanf(books, " %s", registry[i].chars);
     }
 
     if (args.situation == 3) {
@@ -34,9 +33,7 @@ void generateRegisters(Arguments args) {
       registry[i].key = i;
       registry[i].data = rand();
 
-      for (int j = 0; j < 500; ++j) {
-        registry[i].chars[j] = (rand() % 95) + 32;
-      }
+      fscanf(books, " %s", registry[i].chars);
     }
   }
 
